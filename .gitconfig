@@ -3,3 +3,8 @@
 	email = vitorboschi@gmail.com
 [core]
 	excludesfile = ~/.gitexcludes
+[pull]
+	rebase = true
+[push]
+	default = simple
+
