@@ -1,0 +1,5 @@
+[user]
+	name = Vitor Boschi da Silva
+	email = vitorboschi@gmail.com
+[core]
+	excludesfile = ~/.gitexcludes
