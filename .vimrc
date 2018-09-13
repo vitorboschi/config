@@ -33,6 +33,7 @@ call vundle#begin()
 call vundle#end()            " required
 filetype plugin indent on    " required
 "Vundle setup end
+let mapleader = " "
 
 "UltiSnips
 "If you want :UltiSnipsEdit to split your window.
