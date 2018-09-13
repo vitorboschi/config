@@ -127,6 +127,8 @@ if 'VIRTUAL_ENV' in os.environ:
 EOF
 
 
+"helpers for opening files in the same directory as the current buffer
 map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
 map ,t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map ,v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
 map ,s :split <C-R>=expand("%:p:h") . "/" <CR>
