@@ -21,7 +21,8 @@ call vundle#begin()
 	Plugin 'toggle_comment'
 	Plugin 'octol/vim-cpp-enhanced-highlight'
 	Plugin 'rdnetto/YCM-Generator'
-
+	Plugin 'vim-scripts/indentpython.vim'
+	Plugin 'nvie/vim-flake8'
 	" Track the engine.
 	Plugin 'SirVer/ultisnips'
 
@@ -79,6 +80,21 @@ set bg=dark
 filetype on
 set colorcolumn=120
 
+"python specific configuration
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 | 
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set colorcolumn=80 |
+    \ set encoding=utf-8 |
+    \ let python_highlight_all=1 |
+    \ syntax on
+
+
 nmap <F8> :TagbarToggle<CR> 
 nmap <F9> :Dox<CR>
 imap <F9> <Esc>:Dox<CR>
@@ -99,3 +115,18 @@ set encoding=utf-8 " Necessary to show Unicode glyphs
 colorscheme gummybears
 
 set pastetoggle=<F3>
+
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+
+map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
+map ,t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map ,s :split <C-R>=expand("%:p:h") . "/" <CR>
