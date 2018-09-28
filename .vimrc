@@ -1,13 +1,14 @@
+set nocompatible
+
 " Vundle setup begin
 " Of course
-set nocompatible
 "
 " Required Vundle setup
 filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-	Plugin 'gmarik/vundle'
+	Plugin 'VundleVim/Vundle.vim'
 	Plugin 'Raimondi/delimitMate'
 	Plugin 'mrtazz/DoxygenToolkit.vim'
 	Plugin 'scrooloose/syntastic'
@@ -16,40 +17,49 @@ call vundle#begin()
 	Plugin 'tpope/vim-fugitive'
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'Valloric/YouCompleteMe'
-	Plugin 'a.vim'
 	Plugin 'Gummybears'
 	Plugin 'toggle_comment'
 	Plugin 'octol/vim-cpp-enhanced-highlight'
 	Plugin 'rdnetto/YCM-Generator'
-	Plugin 'vim-scripts/indentpython.vim'
+	Plugin 'Vimjas/vim-python-pep8-indent'
 	Plugin 'nvie/vim-flake8'
-	" Track the engine.
+	Plugin 'scrooloose/nerdtree'
+
+	" Snippets engine
 	Plugin 'SirVer/ultisnips'
 
-	" Snippets are separated from the engine. Add this if you want them:
+	" Snippets for the engine
 	Plugin 'honza/vim-snippets'
 
-	"show diff signs
+	" show diff signs
 	Plugin 'airblade/vim-gitgutter'
+
+	" fill python docstrings
+	Plugin 'heavenshell/vim-pydocstring'
+
+	" support for python virtual environment
+	Plugin 'plytophogy/vim-virtualenv'
+	
+	" toggle keywords with gs. Eg. True -> False
+	Plugin 'AndrewRadev/switch.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 "Vundle setup end
+
+"use space as leader key'
 let mapleader = " "
 
 "UltiSnips
-"If you want :UltiSnipsEdit to split your window.
-"let g:UltiSnipsEditSplit="vertical"
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-x>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 
-"ycm
+"YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0 "dont ask for confirmation to load config files
-nmap <c-]> :YcmCompleter GoToDefinitionElseDeclaration<CR>
-imap <c-]> <Esc>:YcmCompleter GoToDefinitionElseDeclaration<CR>
-nmap <c-[> :YcmCompleter FixIt<CR>
+let g:ycm_python_binary_path = 'python'
+nmap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "Airline
 let g:airline_powerline_fonts = 1
@@ -80,8 +90,10 @@ set bg=dark
 filetype on
 set colorcolumn=120
 
+nmap <F8> :TagbarToggle<CR>
+
 "python specific configuration
-au BufNewFile,BufRead *.py
+au FileType python
     \ set tabstop=4 | 
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -91,23 +103,16 @@ au BufNewFile,BufRead *.py
     \ set fileformat=unix |
     \ set colorcolumn=80 |
     \ set encoding=utf-8 |
-    \ let python_highlight_all=1 |
-    \ syntax on
+    \ nmap <silent> <F9> <Plug>(pydocstring) |
+    \ imap <silent> <F9> <esc><Plug>(pydocstring)<CR> 
 
 
-nmap <F8> :TagbarToggle<CR> 
-nmap <F9> :Dox<CR>
-imap <F9> <Esc>:Dox<CR>
 
-" F2 to alternate between implementation and header files
-imap <F2> <Esc>:A<CR>
-nmap <F2> :A<CR>
+au FileType cpp
+	\ nmap <F9> :Dox<CR> |
+	\ imap <F9> <Esc>:Dox<CR>
 
-"Shift+F2 to split and open implementation and header at once
-nmap O2Q :AS<CR>
-imap O2Q <Esc>:AS<CR>
-
-set list          " Display unprintable characters f12 - switches
+set list          " Display unprintable characters
 set listchars=tab:\|\ ,trail:•,extends:»,precedes:« " Unprintable chars mapping
 
 set laststatus=2   " Always show the statusline
@@ -137,3 +142,18 @@ map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
 map ,t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map ,v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
 map ,s :split <C-R>=expand("%:p:h") . "/" <CR>
+
+"Git gutter
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+
+"NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
+"use system clipboard (ctrl+c/ctrl+v)
+set clipboard=unnamedplus
+
+"
+"set exrc
+"set secure
+
